@@ -1,0 +1,140 @@
+// out: style.css, compress: true
+
+@red: #F11111;
+@orange: #FF4829;
+@yellow: #FD832A;
+@dark: #252324;
+@lighterdark: #423d3a;
+@smallgap: 15px;
+@biggap: 2*@smallgap;
+@deftrans: all 0.25s ease;
+
+body{
+	font-family: 'Raleway', sans-serif;
+	background: url('assets/wood.jpg') no-repeat center center fixed;
+    background-size: cover;
+	color: white;
+	font-size: 18px;
+}
+
+a{
+	color: @orange;
+	&:hover, &:focus, &:active{
+		color: @yellow;
+		text-decoration: none;
+	}
+}
+
+h1, h2, h3, h4, h5, h6{
+	color: @orange;
+}
+
+hr{
+	border-top: 3px solid white;
+	width: 150px;
+	margin: 10px auto;
+	&.ninja{
+		border-color: transparent;
+	}
+}
+
+.nav-row{
+	margin-top: @smallgap;
+	border-top: 3px solid @orange;
+	background-color: @dark;
+	padding: @biggap 0;
+	h1{
+		font-weight: bold;
+		margin: 0;
+		a{
+			color: white;
+			transition: @deftrans;
+			&:hover, &:focus, &:active{
+				color: @yellow;
+			}
+		}
+	}
+}
+
+.main-row{
+	padding: @biggap 0;
+	margin-top: @biggap;
+	background-color: rgba(37,35,36,0.7);
+}
+
+.nav{
+	list-style: none;
+	li{
+		float: right;
+		a{
+			color: white;
+			.fa{
+				color: @orange;
+			}
+			transition: @deftrans;
+			&:hover, &:focus, &:active{
+				background-color: white;
+				color: @orange;
+			}
+		}
+	}
+}
+
+input{
+	display: none;
+}
+
+input+label{
+	padding: 5px 10px;
+	margin: 0;
+	cursor: pointer;
+	transition: @deftrans;
+	.fa-check-circle-o{
+		display: none;
+	}
+	.fa-circle-o{
+		display: block;
+	}
+	border: 3px solid transparent;
+	&:hover, &:focus, &:active{
+		border-color: white;
+	}
+}
+
+input[type="checkbox"]:checked+label{
+	&.redbg{
+		background-color: @red;
+	}
+	&.orangebg{
+		background-color: @orange;
+	}
+	&.yellowbg{
+		background-color: @yellow;
+	}
+	transition: @deftrans;
+	.fa-check-circle-o{
+		display: block;
+	}
+	.fa-circle-o{
+		display: none;
+	}
+}
+
+.fa-play{
+	padding-right: 3px;
+}
+
+.btn{
+	background: white;
+	color: @orange;
+	border: 3px solid white;
+	border-radius: 0;
+	font-weight: bold;
+	transition: @deftrans;
+	font-size: 18px;
+	&:hover{
+		background-color: @orange;
+		border-color: white;
+		color: white;
+	}
+}
