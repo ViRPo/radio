@@ -39,7 +39,7 @@ hr{
 }
 
 .nav-row{
-	margin-top: @smallgap;
+	margin-top: @biggap;
 	border-top: 3px solid @orange;
 	background-color: @dark;
 	padding: @biggap 0;
@@ -80,8 +80,32 @@ hr{
 	}
 }
 
-input{
+.semi-button{
+	padding: @smallgap 10px;
+	color: white;
+	background-color: transparent;
+	border: 3px solid white;
+	.fa{
+		color: @orange;
+	}
+	transition: @deftrans;
+	&:hover, &:focus, &:active{
+		background-color: white;
+		color: @orange;
+	}
+}
+
+.mood-form input[type="checkbox"], .add-form input[type="radio"]{
 	display: none;
+}
+
+form{
+	input{
+		background-color: @dark;
+		border: 3px solid white;
+		color: white;
+		padding: 5px 10px;
+	}
 }
 
 input+label{
@@ -89,7 +113,7 @@ input+label{
 	margin: 0;
 	cursor: pointer;
 	transition: @deftrans;
-	.fa-check-circle-o{
+	.fa-check-circle-o, .fa-dot-circle-o, .fa-dot-circle-o{
 		display: none;
 	}
 	.fa-circle-o{
@@ -101,7 +125,7 @@ input+label{
 	}
 }
 
-input[type="checkbox"]:checked+label{
+input[type="checkbox"]:checked+label, input[type="radio"]:checked+label{
 	&.redbg{
 		background-color: @red;
 	}
@@ -112,7 +136,7 @@ input[type="checkbox"]:checked+label{
 		background-color: @yellow;
 	}
 	transition: @deftrans;
-	.fa-check-circle-o{
+	.fa-check-circle-o, .fa-dot-circle-o{
 		display: block;
 	}
 	.fa-circle-o{
@@ -125,16 +149,16 @@ input[type="checkbox"]:checked+label{
 }
 
 .btn{
-	background: white;
-	color: @orange;
+	background-color: @orange;
 	border: 3px solid white;
+	color: white;
 	border-radius: 0;
 	font-weight: bold;
 	transition: @deftrans;
 	font-size: 18px;
 	&:hover{
-		background-color: @orange;
-		border-color: white;
-		color: white;
+		background: white;
+		color: @orange;
+		border-color: @orange;
 	}
 }
