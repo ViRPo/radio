@@ -22,7 +22,6 @@
 						<div class="col-md-8 text-right">
 							<ul class="nav">
 								<li><a href="#">Login</a></li>
-								<li><a href="#"><i class="fa fa-plus-circle"></i> Add song</a></li>
 							</ul>
 						</div>
 					</div>
@@ -34,28 +33,148 @@
 						<iframe width="530" height="315" src="https://www.youtube.com/embed/SPlQpGeTbIE" frameborder="0" allowfullscreen></iframe>
 					</div>
 					<div class="col-md-6 text-center">
-						<p><strong>Play songs which are:</strong></p>
-						<form action="" method="get">
-							<input type="checkbox" name="speed" id="speed1" value="1"><label for="speed1" class="redbg"><i class="fa fa-check-circle-o"></i><i class="fa fa-circle-o"></i> Slow</label>
-							<input type="checkbox" name="speed" id="speed2" value="2" checked="checked"><label for="speed2" class="redbg"><i class="fa fa-check-circle-o"></i><i class="fa fa-circle-o"></i> Normal</label>
-							<input type="checkbox" name="speed" id="speed3" value="3" checked="checked"><label for="speed3" class="redbg"><i class="fa fa-check-circle-o"></i><i class="fa fa-circle-o"></i> Fast</label>
-							<input type="checkbox" name="speed" id="speed4" value="4"><label for="speed4" class="redbg"><i class="fa fa-check-circle-o"></i><i class="fa fa-circle-o"></i> Insane</label>
+						<p><strong>Play songs with this mood:</strong></p>
+						<form class="mood-form" action="" method="get">
+							<input type="checkbox" name="speed" id="speed1" value="1">
+							<label for="speed1" class="redbg">
+								<i class="fa fa-check-circle-o"></i>
+								<i class="fa fa-circle-o"></i>
+								Slow
+							</label>
+							<input type="checkbox" name="speed" id="speed2" value="2" checked="checked">
+							<label for="speed2" class="redbg">
+								<i class="fa fa-check-circle-o"></i>
+								<i class="fa fa-circle-o"></i>
+								Normal
+							</label>
+							<input type="checkbox" name="speed" id="speed3" value="3" checked="checked">
+							<label for="speed3" class="redbg">
+								<i class="fa fa-check-circle-o"></i>
+								<i class="fa fa-circle-o"></i>
+								Fast
+							</label>
+							<input type="checkbox" name="speed" id="speed4" value="4">
+							<label for="speed4" class="redbg">
+								<i class="fa fa-check-circle-o"></i>
+								<i class="fa fa-circle-o"></i>
+								Insane
+							</label>
+
 							<hr>
+
 							<input type="checkbox" name="mood" id="mood1" value="1">
 							<label for="mood1" class="orangebg">
 								<i class="fa fa-check-circle-o"></i>
 								<i class="fa fa-circle-o"></i>
 								Sad
 							</label>
-							<input type="checkbox" name="mood" id="mood2" value="2" checked="checked"><label for="mood2" class="orangebg"><i class="fa fa-check-circle-o"></i><i class="fa fa-circle-o"></i> Neutral</label>
-							<input type="checkbox" name="mood" id="mood3" value="3" checked="checked"><label for="mood3" class="orangebg"><i class="fa fa-check-circle-o"></i><i class="fa fa-circle-o"></i> Happy</label>
+							<input type="checkbox" name="mood" id="mood2" value="2" checked="checked">
+							<label for="mood2" class="orangebg">
+								<i class="fa fa-check-circle-o"></i>
+								<i class="fa fa-circle-o"></i>
+								Neutral
+							</label>
+							<input type="checkbox" name="mood" id="mood3" value="3" checked="checked">
+							<label for="mood3" class="orangebg">
+								<i class="fa fa-check-circle-o"></i>
+								<i class="fa fa-circle-o"></i>
+								Happy
+							</label>
+
 							<hr>
+
 							<input type="checkbox" name="intensity" id="intensity1" value="1"><label for="intensity1" class="yellowbg"><i class="fa fa-check-circle-o"></i><i class="fa fa-circle-o"></i> Calm</label>
 							<input type="checkbox" name="intensity" id="intensity2" value="2" checked="checked"><label for="intensity2" class="yellowbg"><i class="fa fa-check-circle-o"></i><i class="fa fa-circle-o"></i> Neutral</label>
 							<input type="checkbox" name="intensity" id="intensity3" value="3" checked="checked"><label for="intensity3" class="yellowbg"><i class="fa fa-check-circle-o"></i><i class="fa fa-circle-o"></i> Epic</label>
 							<hr class="ninja">
 							<button class="btn" type="submit" value="Submit"><i class="fa fa-play"></i> Apply 'n' play</button>
 						</form>
+					</div>
+				</div>
+			</div>
+			<div class="row main-row">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-6 text-center">
+							<button class="semi-button" type="button" data-toggle="collapse" data-target="#addSongForm" aria-expanded="false" aria-controls="addSongForm">
+							  <i class="fa fa-plus-circle"></i> Add new song
+							</button>
+							<form class="add-form collapse" action="index.html" method="post" id="addSongForm">
+								<input type="text" name="add-name" value="" placeholder="YouTube URL">
+								<br>
+								<input type="radio" name="add-speed" id="add-speed1" value="1">
+								<label for="add-speed1" class="redbg">
+									<i class="fa fa-dot-circle-o"></i>
+									<i class="fa fa-circle-o"></i>
+									Slow
+								</label>
+								<input type="radio" name="add-speed" id="add-speed2" value="2" checked="checked">
+								<label for="add-speed2" class="redbg">
+									<i class="fa fa-dot-circle-o"></i>
+									<i class="fa fa-circle-o"></i>
+									Normal
+								</label>
+								<input type="radio" name="add-speed" id="add-speed3" value="3" checked="checked">
+								<label for="add-speed3" class="redbg">
+									<i class="fa fa-dot-circle-o"></i>
+									<i class="fa fa-circle-o"></i>
+									Fast
+								</label>
+								<input type="radio" name="add-speed" id="add-speed4" value="4">
+								<label for="add-speed4" class="redbg">
+									<i class="fa fa-dot-circle-o"></i>
+									<i class="fa fa-circle-o"></i>
+									Insane
+								</label>
+
+								<br>
+
+								<input type="radio" name="add-mood" id="add-mood1" value="1">
+								<label for="add-mood1" class="orangebg">
+									<i class="fa fa-dot-circle-o"></i>
+									<i class="fa fa-circle-o"></i>
+									Sad
+								</label>
+								<input type="radio" name="add-mood" id="add-mood2" value="2" checked="checked">
+								<label for="add-mood2" class="orangebg">
+									<i class="fa fa-dot-circle-o"></i>
+									<i class="fa fa-circle-o"></i>
+									Neutral
+								</label>
+								<input type="radio" name="add-mood" id="add-mood3" value="3" checked="checked">
+								<label for="add-mood3" class="orangebg">
+									<i class="fa fa-dot-circle-o"></i>
+									<i class="fa fa-circle-o"></i>
+									Happy
+								</label>
+
+								<br>
+
+								<input type="radio" name="add-intensity" id="add-intensity1" value="1">
+								<label for="add-intensity1" class="yellowbg">
+									<i class="fa fa-dot-circle-o"></i>
+									<i class="fa fa-circle-o"></i>
+									Calm
+								</label>
+								<input type="radio" name="add-intensity" id="add-intensity2" value="2" checked="checked">
+								<label for="add-intensity2" class="yellowbg">
+									<i class="fa fa-dot-circle-o"></i>
+									<i class="fa fa-circle-o"></i>
+									Neutral
+								</label>
+								<input type="radio" name="add-intensity" id="add-intensity3" value="3" checked="checked">
+								<label for="add-intensity3" class="yellowbg">
+									<i class="fa fa-dot-circle-o"></i>
+									<i class="fa fa-circle-o"></i>
+									Epic
+								</label>
+								<br>
+								<button class="btn btn-default" type="button" name="button"><i class="fa fa-plus-circle"></i> Suggest it to me :)</button>
+							</form>
+						</div>
+						<div class="col-md-6">
+
+						</div>
 					</div>
 				</div>
 			</div>
