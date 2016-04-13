@@ -3,12 +3,14 @@
 @red: #F11111;
 @orange: #FF4829;
 @yellow: #FD832A;
-@brightyellow: #D4A300;
+@brightyellow: #EAB914;
 @dark: #252324;
 @lighterdark: #423d3a;
 @smallgap: 15px;
 @biggap: 2*@smallgap;
 @deftrans: all 0.25s ease;
+@border-width: 3px;
+@border: @border-width solid white;
 
 body{
 	font-family: 'Raleway', sans-serif;
@@ -28,6 +30,26 @@ a{
 
 h1, h2, h3, h4, h5, h6{
 	color: @orange;
+}
+
+.color-red{
+	color: @red;
+}
+
+.color-orange{
+	color: @orange;
+}
+
+.color-yellow{
+	color: @yellow;
+}
+
+.color-brightyellow{
+	color: @brightyellow;
+}
+
+.color-white{
+	color: white;
 }
 
 hr{
@@ -113,20 +135,43 @@ span.eg{
 	background-color: transparent;
 }
 
-.mood-form input[type="checkbox"], .add-form input[type="radio"], .add-form input[type="checkbox"]{
+.mood-form input[type="checkbox"], .add-form input[type="radio"], .add-form input[type="checkbox"], .accept-song-form input[type="radio"]{
 	display: none;
+}
+
+.accept-song-form button{
+	margin-top: @smallgap;
 }
 
 .add-form input, .add-form label, .add-form button, .add-form textarea{
 	margin-top: @smallgap;
 }
 
+form select{
+	margin-top: @smallgap;
+	margin-bottom: @smallgap;
+}
+
+.logout-form{
+	display: inline-block;
+}
+
+.hi-user{
+	padding-right: @smallgap;
+}
+
 form{
-	input, textarea{
+	input, textarea, select{
 		background-color: @dark;
 		border: 3px solid white;
 		color: white;
-		padding: 5px 10px;
+		padding: 6px 10px;
+	}
+}
+
+form.mini-form{
+	input, textarea, select, button, label{
+		font-size: 15px;
 	}
 }
 
@@ -186,4 +231,23 @@ input[type="checkbox"]:checked+label, input[type="radio"]:checked+label{
 		color: @orange;
 		border-color: @orange;
 	}
+}
+
+.comment{
+	padding: @smallgap;
+	margin-bottom: @smallgap;
+	position: relative;
+	.btn-resolved{
+		position: absolute;
+		bottom: @smallgap;
+		right: @smallgap;
+	}
+	blockquote{
+		border-left: @border;
+		margin: @smallgap;
+	}
+}
+
+.wannasignup{
+	margin-top: 15px;
 }
