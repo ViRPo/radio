@@ -21,6 +21,7 @@ function add_song() {
 		$vocal_val = 0;
 		$user_id = 0;
 		$admin_id = 0;
+		$accepted = 0;
 		if (isset($_POST['add-instrumental'])) {
 			$instrumental_val=1;
 		}
@@ -33,12 +34,22 @@ function add_song() {
 		if (isset($_SESSION['user_id'])) {
 			$user_id=$_SESSION['user_id'];
 		}
+		if (isset($_SESSION['user_group'])){
+			if($_SESSION['user_group']==1){
+				$admin_id = $_SESSION['user_id'];
+			}
+		}
+		if (isset($_SESSION['user_group'])){
+			if($_SESSION['user_group']<4){
+				$accepted = 1;
+			}
+		}
 		$video_parsed_url = "Unable to parse: ".addslashes(strip_tags($_POST['add-url']));
 		if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', addslashes(strip_tags($_POST['add-url'])), $match)) {
 		    $video_parsed_url = $match[1];
 		}
 		//$sql = "INSERT INTO `radio`.`songs` (`id`, `youtube_id`, `speed`, `mood`, `intensity`, `instrumental`, `electro`, `vocal`, `admin_id`, `accepted`, `plays`, `skips`) VALUES (NULL, 'lwPrBchV3ZQ', '3', '2', '2', '1', '0', '1', '0', '0', '0', '0');";
-		$sql = "INSERT INTO `radio`.`songs` (`id`, `youtube_id`, `speed`, `mood`, `intensity`, `instrumental`, `electro`, `vocal`, `admin_id`, `user_id`, `accepted`, `plays`, `skips`) VALUES (NULL, '" . $video_parsed_url . "', '" . addslashes(strip_tags($_POST['add-speed'])) . "', '" . addslashes(strip_tags($_POST['add-mood'])) . "', '" . addslashes(strip_tags($_POST['add-intensity'])) . "', '" . $instrumental_val . "', '" . $electro_val . "', '" . $vocal_val . "', '" . $admin_id . "', '" . $user_id . "', '0', '0', '0');";
+		$sql = "INSERT INTO `radio`.`songs` (`id`, `youtube_id`, `speed`, `mood`, `intensity`, `instrumental`, `electro`, `vocal`, `admin_id`, `user_id`, `accepted`, `plays`, `skips`) VALUES (NULL, '" . $video_parsed_url . "', '" . addslashes(strip_tags($_POST['add-speed'])) . "', '" . addslashes(strip_tags($_POST['add-mood'])) . "', '" . addslashes(strip_tags($_POST['add-intensity'])) . "', '" . $instrumental_val . "', '" . $electro_val . "', '" . $vocal_val . "', '" . $admin_id . "', '" . $user_id . "', '" . $accepted . "', '0', '0');";
 		//$sql = "INSERT INTO `songs` (`id`, `name`, `pos`, `day`, `month`, `year`, `injury`, `point`, `assist`) VALUES (NULL, '" . addslashes(strip_tags($_POST['name'])) . "', '". addslashes(strip_tags($_POST['pos'])) ."', '" . addslashes(strip_tags($_POST['day'])) . "', '" . addslashes(strip_tags($_POST['month'])) . "', '" . addslashes(strip_tags($_POST['year'])) . "', '" . addslashes(strip_tags($_POST['injury'])) . "', '" . addslashes(strip_tags($_POST['point'])) . "', '" . addslashes(strip_tags($_POST['assist'])) . "');";
 		$result = mysqli_query($link, $sql); // vykonaj dopyt
 		if ($result) {
@@ -54,6 +65,14 @@ function add_song() {
 		echo 'Unable to connect with database server!';
 	}
 }	// koniec funkcie
+
+function check_if_set($value){
+	if(isset($value)){
+		echo "=";
+	} else {
+		echo "!=";
+	}
+}
 
 function add_comment() {
 	if ($link = connect_db()) {
@@ -154,7 +173,7 @@ function set_user_group($user, $group){
 
 function set_song_accept($song, $accept){
 	if ($link = connect_db()) {
-		$sql = "UPDATE `radio`.`songs` SET `accepted` = '".$accept."' WHERE `songs`.`id` = ".$song.";";
+		$sql = "UPDATE `radio`.`songs` SET `admin_id` = '".$_SESSION['user_id']."', `accepted` = '".$accept."' WHERE `songs`.`id` = ".$song.";";
 		$result = mysqli_query($link, $sql);
 		if ($result) {
 	    echo "Song's 'accepted' set sucesfully!";
@@ -171,15 +190,9 @@ function get_feedback_edit(){
 	if ($link = connect_db()) {
 		$sql = "SELECT * FROM `comments` WHERE resolved='0'";
 		$result = mysqli_query($link, $sql);
-		$pocet = 0;
 		if ($result) {
 			while ($row = mysqli_fetch_assoc($result)) {
-				if ($pocet==0) {
-					$pocet++;
-				} else {
-					echo "<hr>";
-				}
-				echo "<div class='comment'><span class='color-orange'><a href='mailto:" . $row['email'] ."'>";
+				echo "<div class='comment col-md-4'><span class='color-orange'><a href='mailto:" . $row['email'] ."'>";
 				echo $row['nickname'];
 				echo "</strong></span></a> says";
 				echo "<blockquote>";
@@ -212,15 +225,9 @@ function get_users_edit(){
 	if ($link = connect_db()) {
 		$sql = "SELECT * FROM `users`";
 		$result = mysqli_query($link, $sql);
-		$pocet = 0;
 		if ($result) {
 			while ($row = mysqli_fetch_assoc($result)) {
-				if ($pocet==0) {
-					$pocet++;
-				} else {
-					echo "<hr>";
-				}
-				echo "<div class='comment'>";
+				echo "<div class='comment col-md-2'>";
 				echo "<span class='color-orange'>".$row['nickname']."</span><br>";
 				echo $row['email']."<br>";
 				?>
@@ -249,56 +256,158 @@ function get_users_edit(){
 	}
 }
 
-
-
 function get_songs_edit(){
 	if ($link = connect_db()) {
 		$sql = "SELECT * FROM `songs` WHERE `accepted` = 0 ORDER BY `id` ASC";
 		$result = mysqli_query($link, $sql);
-		$pocet = 0;
 		if ($result) {
 			while ($row = mysqli_fetch_assoc($result)) {
-				if ($pocet==0) {
-					$pocet++;
-				} else {
-					echo "<hr>";
-				}
-				echo "<div class='comment'>";
-				echo "<iframe width='300' height='200' src='https://www.youtube.com/embed/".$row['youtube_id']."' frameborder='0'></iframe><br>";
+				echo "<div class='comment col-md-4 col-sm-6 col-xs-12'>";
+				echo "<iframe width='280' height='190' src='https://www.youtube.com/embed/".$row['youtube_id']."' frameborder='0' allowfullscreen></iframe><br>";
 				echo "<span class='color-red'>Speed</span> ".$row['speed']."<br>";
 				echo "<span class='color-orange'>Mood</span> ".$row['mood']."<br>";
 				echo "<span class='color-yellow'>Intensity</span> ".$row['intensity']."<br>";
 				echo "<span class='color-brightyellow'>";
-				if ($row['instrumental']==1) echo "Instrumental ";
-				if ($row['electro']==1) echo "Electro ";
-				if ($row['vocal']==1) echo "Vocal ";
+				if ($row['instrumental']==1) echo "Instrumental <i class='fa fa-music color-white' aria-hidden='true'></i><br>";
+				if ($row['electro']==1) echo "Electro <i class='fa fa-bolt color-white' aria-hidden='true'></i><br>";
+				if ($row['vocal']==1) echo "Vocal <i class='fa fa-microphone color-white' aria-hidden='true'></i><br>";
 				echo "</span>";
-				if (($row['instrumental'] ==1) || ($row['electro'] ==1) || ($row['vocal'] ==1)) echo "<br>";
 				?>
-				<form class="mini-form accept-song-form" action="index.php" method="post" id="userGroupForm">
-					<input type="hidden" name="accept_song_id" value="<?php echo $row['id'] ?>">
-					<br>
-
-					<input type="radio" name="accept-song-value" id="accept-song1" value="1" checked="checked">
-					<label for="accept-song1" class="brightyellowbg">
-						<i class="fa fa-dot-circle-o"></i>
-						<i class="fa fa-circle-o"></i>
-						Accept
-					</label>
-					<input type="radio" name="accept-song-value" id="accept-song2" value="2">
-					<label for="accept-song2" class="redbg">
-						<i class="fa fa-dot-circle-o"></i>
-						<i class="fa fa-circle-o"></i>
-						Decline
-					</label>
-
-					<br>
-
-					<button class="btn btn-trans" type="submit" name="userGroupButton">Do it!</button>
-				</form>
+				<div class="row">
+					<div class="col-xs-6 text-right">
+						<form class="mini-form accept-song-form" action="index.php" method="post" id="userGroupForm">
+							<input type="hidden" name="accept_song_id" value="<?php echo $row['id'] ?>">
+							<button class="btn btn-default brightyellowbg" type="submit" name="userGroupButton"><i class="fa fa-thumbs-up" aria-hidden="true"></i> Accept</button>
+						</form>
+					</div>
+					<div class="col-xs-6 text-left">
+						<form class="mini-form accept-song-form" action="index.php" method="post" id="userGroupForm">
+							<input type="hidden" name="decline_song_id" value="<?php echo $row['id'] ?>">
+							<button class="btn btn-trans brightyellowbg" type="submit" name="userGroupButton"><i class="fa fa-thumbs-down" aria-hidden="true"></i> Decline</button>
+						</form>
+					</div>
+				</div>
 				<?php
 				echo "</div>";
 			}
+			mysqli_free_result($result);
+		} else {
+			// dopyt sa NEpodarilo vykonať!
+			return false;
+		}
+	} else {
+		// Unable to connect with database server!
+		return false;
+	}
+}
+
+function get_all_songs(){
+	if ($link = connect_db()) {
+		$sql = "SELECT `youtube_id` FROM `songs` WHERE (`instrumental` = 1 OR `electro` = 1 OR `vocal` = 1) AND (`speed` = 1 OR `speed` = 2 OR `speed` = 3 OR `speed` = 4) AND (`mood` = 1 OR `mood` = 2 OR `mood` = 3) AND (`intensity` = 1 OR `intensity` = 2 OR `intensity` = 3) AND `accepted` = 1 ORDER BY `id` ASC";
+		$result = mysqli_query($link, $sql);
+		$song_list = array();
+		$pos = 0;
+		if ($result) {
+			while ($row = mysqli_fetch_row($result)) {
+				$song_list[] = $row;
+			}
+			return $song_list;
+			mysqli_free_result($result);
+		} else {
+			// dopyt sa NEpodarilo vykonať!
+			return false;
+		}
+	} else {
+		// Unable to connect with database server!
+		return false;
+	}
+}
+
+function get_songs($speed1, $speed2, $speed3, $speed4, $mood1, $mood2, $mood3, $intensity1, $intensity2, $intensity3, $vocal1, $vocal2, $vocal3){
+	if ($link = connect_db()) {
+		$sql = "SELECT `youtube_id` FROM `songs` WHERE (";
+		if ($speed1==1) {
+			$sql = $sql . "`speed` = 1 OR ";
+		} else {
+			$sql = $sql . "0 OR ";
+		}
+		if ($speed2==1) {
+			$sql = $sql . "`speed` = 2 OR ";
+		} else {
+			$sql = $sql . "0 OR ";
+		}
+		if ($speed3==1) {
+			$sql = $sql . "`speed` = 3 OR ";
+		} else {
+			$sql = $sql . "0 OR ";
+		}
+		if ($speed4==1) {
+			$sql = $sql . "`speed` = 4 ";
+		} else {
+			$sql = $sql . "0 ";
+		}
+		$sql = $sql .") AND ( ";
+
+		if ($mood1==1) {
+			$sql = $sql . "`mood` = 1 OR ";
+		} else {
+			$sql = $sql . "0 OR ";
+		}
+		if ($mood2==1) {
+			$sql = $sql . "`mood` = 2 OR ";
+		} else {
+			$sql = $sql . "0 OR ";
+		}
+		if ($mood3==1) {
+			$sql = $sql . "`mood` = 3 ";
+		} else {
+			$sql = $sql . "0 ";
+		}
+		$sql = $sql .") AND ( ";
+
+		if ($intensity1==1) {
+			$sql = $sql . "`intensity` = 1 OR ";
+		} else {
+			$sql = $sql . "0 OR ";
+		}
+		if ($intensity2==1) {
+			$sql = $sql . "`intensity` = 2 OR ";
+		} else {
+			$sql = $sql . "0 OR ";
+		}
+		if ($intensity3==1) {
+			$sql = $sql . "`intensity` = 3 ";
+		} else {
+			$sql = $sql . "0 ";
+		}
+		$sql = $sql .") AND ( ";
+		
+		if ($vocal1==1) {
+			$sql = $sql . "`instrumental` = 1 OR ";
+		} else {
+			$sql = $sql . "0 OR ";
+		}
+		if ($vocal2==1) {
+			$sql = $sql . "`electro` = 1 OR ";
+		} else {
+			$sql = $sql . "0 OR ";
+		}
+		if ($vocal3==1) {
+			$sql = $sql . "`vocal` = 1 ";
+		} else {
+			$sql = $sql . "0 ";
+		}
+		$sql = $sql .")";
+
+		$sql = $sql . "AND `accepted` = 1 ORDER BY `id` ASC";
+		$result = mysqli_query($link, $sql);
+		$song_list = array();
+		$pos = 0;
+		if ($result) {
+			while ($row = mysqli_fetch_row($result)) {
+				$song_list[] = $row;
+			}
+			return $song_list;
 			mysqli_free_result($result);
 		} else {
 			// dopyt sa NEpodarilo vykonať!
