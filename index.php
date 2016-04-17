@@ -18,7 +18,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-4 text-center">
-						<h1><a href="/radio">Mood Radio</a></h1>
+						<h1><a href="/">Mood Radio</a></h1>
 					</div>
 					<div class="col-md-8 text-right">
 
@@ -285,7 +285,7 @@
 							<i class="fa fa-check-circle-o"></i>
 							<i class="fa fa-circle-o"></i> Neutral
 						</label>
-						<input type="checkbox" name="intensity3" id="intensity3" value="3" <?php if(isset($_POST["intensity2"])){ echo "checked='checked'"; } else { if(!isset($_POST["playsong"])){ echo "checked='checked'"; } } ?>>
+						<input type="checkbox" name="intensity3" id="intensity3" value="3" <?php if(isset($_POST["intensity3"])){ echo "checked='checked'"; } else { if(!isset($_POST["playsong"])){ echo "checked='checked'"; } } ?>>
 						<label for="intensity3" class="yellowbg">
 							<i class="fa fa-check-circle-o"></i>
 							<i class="fa fa-circle-o"></i> Intense
@@ -486,5 +486,15 @@
 		  nextVideo();
 	  });
     </script>
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-76431545-1', 'auto');
+	  ga('send', 'pageview');
+
+	</script>
 </body>
 </html>
