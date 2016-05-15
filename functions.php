@@ -186,6 +186,21 @@ function set_song_accept($song, $accept){
 	}
 }
 
+function set_song_edit_accept($song, $speed, $mood, $intensity, $instrumental, $electro, $vocal, $accept){
+	if ($link = connect_db()) {
+		$sql = "UPDATE `radio`.`songs` SET `admin_id` = '".$_SESSION['user_id']."', `speed` = '".$speed."', `mood` = '".$mood."', `intensity` = '".$intensity."', `instrumental` = '".$instrumental."', `electro` = '".$electro."', `vocal` = '".$vocal."', `accepted` = '".$accept."' WHERE `songs`.`id` = ".$song.";";
+		$result = mysqli_query($link, $sql);
+		if ($result) {
+	    echo "Song's 'accepted' set sucesfully!";
+	 	} else {
+	   	echo 'Unable to find that song';
+	  }
+		mysqli_close($link);
+	} else {
+		echo 'Unable to connect with database server!';
+	}
+}
+
 function get_feedback_edit(){
 	if ($link = connect_db()) {
 		$sql = "SELECT * FROM `comments` WHERE resolved='0'";
@@ -264,23 +279,34 @@ function get_songs_edit(){
 			while ($row = mysqli_fetch_assoc($result)) {
 				echo "<div class='comment col-md-4 col-sm-6 col-xs-12'>";
 				echo "<iframe width='280' height='190' src='https://www.youtube.com/embed/".$row['youtube_id']."' frameborder='0' allowfullscreen></iframe><br>";
-				echo "<span class='color-red'>Speed</span> ".$row['speed']."<br>";
-				echo "<span class='color-orange'>Mood</span> ".$row['mood']."<br>";
-				echo "<span class='color-yellow'>Intensity</span> ".$row['intensity']."<br>";
-				echo "<span class='color-brightyellow'>";
-				if ($row['instrumental']==1) echo "Instrumental <i class='fa fa-music color-white' aria-hidden='true'></i><br>";
-				if ($row['electro']==1) echo "Electro <i class='fa fa-bolt color-white' aria-hidden='true'></i><br>";
-				if ($row['vocal']==1) echo "Vocal <i class='fa fa-microphone color-white' aria-hidden='true'></i><br>";
-				echo "</span>";
 				?>
 				<div class="row">
-					<div class="col-xs-6 text-right">
+					<div class="col-xs-12 text-center">
 						<form class="mini-form accept-song-form" action="index.php" method="post" id="userGroupForm">
 							<input type="hidden" name="accept_song_id" value="<?php echo $row['id'] ?>">
+							<table class="no-style-table">
+								<tr>
+									<td class="text-left"><span class='color-red'>Speed&nbsp;</span></td>
+									<td class="text-right"><input type="number" name="new_speed" min="1" max="4" value="<?php echo $row['speed'] ?>"></td>
+								</tr>
+								<tr>
+									<td class="text-left"><span class='color-orange'>Mood&nbsp;</span></td>
+									<td class="text-right"><input type="number" name="new_mood" min="1" max="3" value="<?php echo $row['mood'] ?>"></td>
+								</tr>
+								<tr>
+									<td class="text-left"><span class='color-yellow'>Intensity&nbsp;</span></td>
+									<td class="text-right"><input type="number" name="new_intensity" min="1" max="3" value="<?php echo $row['intensity'] ?>"></td>
+								</tr>
+							</table>
+							<span class='color-brightyellow'>
+							<i class='fa fa-music color-white' aria-hidden='true'></i> Instrumental <input type="checkbox" name="new_instrumental" value="1" <?php if($row['instrumental']==1) echo "checked"; ?>><br>
+							<i class='fa fa-bolt color-white' aria-hidden='true'></i> Electro <input type="checkbox" name="new_electro" value="1" <?php if($row['electro']==1) echo "checked"; ?>><br>
+							<i class='fa fa-microphone color-white' aria-hidden='true'></i> Vocal <input type="checkbox" name="new_vocal" value="1" <?php if($row['vocal']==1) echo "checked"; ?>><br>
+							</span>
 							<button class="btn btn-default brightyellowbg" type="submit" name="userGroupButton"><i class="fa fa-thumbs-up" aria-hidden="true"></i> Accept</button>
 						</form>
 					</div>
-					<div class="col-xs-6 text-left">
+					<div class="col-xs-12 text-center">
 						<form class="mini-form accept-song-form" action="index.php" method="post" id="userGroupForm">
 							<input type="hidden" name="decline_song_id" value="<?php echo $row['id'] ?>">
 							<button class="btn btn-trans brightyellowbg" type="submit" name="userGroupButton"><i class="fa fa-thumbs-down" aria-hidden="true"></i> Decline</button>
@@ -381,7 +407,7 @@ function get_songs($speed1, $speed2, $speed3, $speed4, $mood1, $mood2, $mood3, $
 			$sql = $sql . "0 ";
 		}
 		$sql = $sql .") AND ( ";
-		
+
 		if ($vocal1==1) {
 			$sql = $sql . "`instrumental` = 1 OR ";
 		} else {

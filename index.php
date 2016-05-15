@@ -71,7 +71,10 @@
 						}
 
 						if(isset($_POST["accept_song_id"])){
-							set_song_accept(addslashes(strip_tags($_POST["accept_song_id"])), 1);
+							if(isset($_POST["new_instrumental"])){ $new_instrumental = 1; } else { $new_instrumental = 0; }
+							if(isset($_POST["new_electro"])){ $new_electro = 1; } else { $new_electro = 0; }
+							if(isset($_POST["new_vocal"])){ $new_vocal = 1; } else { $new_vocal = 0; }
+							set_song_edit_accept(addslashes(strip_tags($_POST["accept_song_id"])), addslashes(strip_tags($_POST["new_speed"])), addslashes(strip_tags($_POST["new_mood"])), addslashes(strip_tags($_POST["new_intensity"])), $new_instrumental, $new_electro, $new_vocal, 1);
 						}
 
 						if(isset($_POST["decline_song_id"])){
@@ -218,7 +221,7 @@
 		<div class="row main-row">
 			<div class="container">
 				<div class="col-md-6 text-center">
-					<div id="player"></div>
+					<div class="flex-video widescreen"><div id="player"></div></div>
 					<button id="skip-song" type="button" name="skip-song" class="btn btn-trans btn-skip"><i class="fa fa-step-forward" aria-hidden="true"></i> Skip</button>
 				</div>
 				<div class="col-md-6 text-center">
@@ -399,7 +402,7 @@
 				url: 'add.php',
 				data: $('form#addSongForm').serialize(),
 				success: function () {
-					alert('form was submitted');
+					alert('Song was sucesfully submitted. Thank you :)');
 				}
 			});
 		});
@@ -410,7 +413,7 @@
 				url: 'add.php',
 				data: $('form#suggestForm').serialize(),
 				success: function () {
-					alert('form was submitted');
+					alert('Song was sucesfully submitted. Thank you :)');
 				}
 			});
 		});
