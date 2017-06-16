@@ -1,8 +1,8 @@
 <?php
 
-  $host = 'localhost';
-  $username = 'root';
-  $passwd = '';
-  $dbname = 'radio';
+  $GLOBALS['host'] = 'localhost';
+  $GLOBALS['username'] = 'root';
+  $GLOBALS['passwd'] = '';
+  $GLOBALS['dbname'] = 'radio';
 
 ?>

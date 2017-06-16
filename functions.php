@@ -6,7 +6,7 @@ session_start();
 
 //Univerzalny link s databazou
 function connect_db() {
-	if ($link = mysqli_connect($host, $username, $passwd, $dbname)) {
+	if ($link = mysqli_connect($GLOBALS['host'], $GLOBALS['username'], $GLOBALS['passwd'], $GLOBALS['dbname'])) {
 			mysqli_query($link, "SET CHARACTER SET 'utf8'");
 			return $link;
 	} else {
