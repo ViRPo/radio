@@ -1,10 +1,12 @@
 <?php
 
+include('config.php');
+
 session_start();
 
 //Univerzalny link s databazou
 function connect_db() {
-	if ($link = mysqli_connect('localhost', 'root', '', 'radio')) {
+	if ($link = mysqli_connect($host, $username, $passwd, $dbname)) {
 			mysqli_query($link, "SET CHARACTER SET 'utf8'");
 			return $link;
 	} else {
