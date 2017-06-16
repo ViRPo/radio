@@ -105,6 +105,20 @@
 							<i class="fa fa-plus-circle"></i> Add new song
 						</a>
 
+						<a class="btn" type="button" data-toggle="collapse" data-target="#quickAddSongForm" aria-expanded="false" aria-controls="quickAddSongForm">
+							<i class="fa fa-plus-circle"></i> Quick add
+						</a>
+
+            <form method="post" class="add-form collapse" id="quickAddSongForm">
+							<input type="text" name="quick-add-url" value="" placeholder="YouTube URL">
+							<br>
+							<span class="eg">For example: www.youtube.com/watch?v=SPlQpGeTbIE</span>
+
+							<br>
+
+							<button class="btn btn-default" type="submit" name="quickaddsong" data-toggle="collapse" data-target="#quickAddSongForm" aria-expanded="false" aria-controls="quickAddSongForm"><i class="fa fa-plus-circle"></i> Suggest it to me :)</button>
+						</form>
+
 						<form method="post" class="add-form collapse" id="addSongForm">
 							<input type="text" name="add-url" value="" placeholder="YouTube URL">
 							<br>
@@ -406,6 +420,17 @@
 				}
 			});
 		});
+		$('form#quickAddSongForm').on('submit', function (e) {
+			e.preventDefault();
+			$.ajax({
+				type: 'post',
+				url: 'add.php',
+				data: $('form#quickAddSongForm').serialize(),
+				success: function () {
+					alert('Song was sucesfully submitted. Thank you :)');
+				}
+			});
+		});
 		$('form#suggestForm').on('submit', function (e) {
 			e.preventDefault();
 			$.ajax({
@@ -437,7 +462,7 @@
           events: {
             'onReady': onPlayerReady,
             'onStateChange': onPlayerStateChange,
-			'onError': nextVideo
+			      'onError': nextVideo
           }
         });
       }

@@ -68,6 +68,44 @@ function add_song() {
 	}
 }	// koniec funkcie
 
+// Quick Add funkcia
+function quick_add_song() {
+	if ($link = connect_db()) {
+		$instrumental_val = 0;
+		$electro_val = 0;
+		$vocal_val = 0;
+		$user_id = 0;
+		$admin_id = 0;
+		$accepted = 0;
+		if (isset($_SESSION['user_id'])) {
+			$user_id=$_SESSION['user_id'];
+		}
+		if (isset($_SESSION['user_group'])){
+			if($_SESSION['user_group']==1){
+				$admin_id = $_SESSION['user_id'];
+			}
+		}
+		$video_parsed_url = "Unable to parse: ".addslashes(strip_tags($_POST['add-url']));
+		if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', addslashes(strip_tags($_POST['quick-add-url'])), $match)) {
+		    $video_parsed_url = $match[1];
+		}
+		//$sql = "INSERT INTO `radio`.`songs` (`id`, `youtube_id`, `speed`, `mood`, `intensity`, `instrumental`, `electro`, `vocal`, `admin_id`, `accepted`, `plays`, `skips`) VALUES (NULL, 'lwPrBchV3ZQ', '3', '2', '2', '1', '0', '1', '0', '0', '0', '0');";
+		$sql = "INSERT INTO `radio`.`songs` (`id`, `youtube_id`, `speed`, `mood`, `intensity`, `instrumental`, `electro`, `vocal`, `admin_id`, `user_id`, `accepted`, `plays`, `skips`) VALUES (NULL, '" . $video_parsed_url . "', '3', '2', '2', '" . $instrumental_val . "', '" . $electro_val . "', '" . $vocal_val . "', '" . $admin_id . "', '" . $user_id . "', '" . $accepted . "', '0', '0');";
+		$result = mysqli_query($link, $sql); // vykonaj dopyt
+		if ($result) {
+			// dopyt sa podarilo vykonať
+	    echo 'Úspešne pridané';
+	 	} else {
+			// dopyt sa nepodarilo vykonať
+	   	echo 'Nastala chyba pri pridávaní';
+	  }
+		mysqli_close($link);
+	} else {
+		// nepodarilo sa spojit s databazou alebo vybrat databazu
+		echo 'Unable to connect with database server!';
+	}
+}
+
 function check_if_set($value){
 	if(isset($value)){
 		echo "=";
