@@ -393,8 +393,9 @@ function get_all_songs_count(){
 	if ($link = connect_db()) {
 		$sql = "SELECT COUNT(*) FROM `songs` WHERE `accepted` = 1";
 		$result = mysqli_query($link, $sql);
+    $answer = mysqli_fetch_row($result);
 		if ($result) {
-			return mysqli_fetch_row($result)[0];
+			return $answer[0];
 			mysqli_free_result($result);
 		} else {
 			// dopyt sa NEpodarilo vykonať!
