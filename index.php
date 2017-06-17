@@ -5,6 +5,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#252324">
 	<title>Mood Radio | by ViRPo</title>
 	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700,900,900italic,700italic,500italic,500,400italic,300italic,100italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -236,11 +237,8 @@
 			<div class="container">
 				<div class="col-md-6 text-center">
 					<div class="flex-video widescreen"><div id="player"></div></div>
-					<button id="skip-song" type="button" name="skip-song" class="btn btn-trans btn-skip"><i class="fa fa-step-forward" aria-hidden="true"></i> Skip</button>
-          <div class="m-top-1">
-            <strong><span id="numSelectedSongs"></span></strong> of <strong><?php echo get_all_songs_count(); ?></strong> songs<br>
-            match saved criteria
-          </div>
+					<button id="prev-song" type="button" name="prev-song" class="btn btn-trans btn-skip"><i class="fa fa-step-backward" aria-hidden="true"></i> Back</button>
+					<button id="skip-song" type="button" name="skip-song" class="btn btn-trans btn-skip">Skip <i class="fa fa-step-forward" aria-hidden="true"></i></button>
 				</div>
 				<div class="col-md-6 text-center">
 					<p><strong>Set <span class="color-red">speed</span>, <span class="color-orange">mood</span>, <span class="color-yellow">intensity</span> and <span class="color-brightyellow">sounds</span>:</strong></p>
@@ -331,7 +329,13 @@
 						</label>
 
 						<hr class="ninja">
+
 						<button class="btn" type="submit" name="playsong" value="Submit"><i class="fa fa-play"></i>Apply 'n' play</button>
+
+            <div class="m-top-1">
+              <strong><span id="numSelectedSongs"></span></strong> of <strong><?php echo get_all_songs_count(); ?></strong> songs<br>
+              match saved criteria
+            </div>
 					</form>
 				</div>
 			</div>
@@ -516,9 +520,22 @@
 		  player.playVideo();
 	  }
 
+    function prevVideo(){
+      if(currentVideo >= 0){
+		    player.cueVideoById(videos[currentVideo-2][0]);
+        currentVideo--;
+      }
+		  player.playVideo();
+	  }
+
 	  $('#skip-song').on('click', function (e) {
 		  e.preventDefault();
 		  nextVideo();
+	  });
+
+	  $('#prev-song').on('click', function (e) {
+		  e.preventDefault();
+		  prevVideo();
 	  });
     </script>
 	<script>

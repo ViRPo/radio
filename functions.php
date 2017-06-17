@@ -466,20 +466,20 @@ function get_songs($speed1, $speed2, $speed3, $speed4, $mood1, $mood2, $mood3, $
 		}
 		$sql = $sql .") AND ( ";
 
-		if ($vocal1==1) {
-			$sql = $sql . "`instrumental` = 1 OR ";
+		if ($vocal1==0) {
+			$sql = $sql . "`instrumental` = 0 AND ";
 		} else {
-			$sql = $sql . "0 OR ";
+			$sql = $sql . "1 AND ";
 		}
-		if ($vocal2==1) {
-			$sql = $sql . "`electro` = 1 OR ";
+		if ($vocal2==0) {
+			$sql = $sql . "`electro` = 0 AND ";
 		} else {
-			$sql = $sql . "0 OR ";
+			$sql = $sql . "1 AND ";
 		}
-		if ($vocal3==1) {
-			$sql = $sql . "`vocal` = 1 ";
+		if ($vocal3==0) {
+			$sql = $sql . "`vocal` = 0 ";
 		} else {
-			$sql = $sql . "0 ";
+			$sql = $sql . "1 ";
 		}
 		$sql = $sql .")";
 
