@@ -237,6 +237,10 @@
 				<div class="col-md-6 text-center">
 					<div class="flex-video widescreen"><div id="player"></div></div>
 					<button id="skip-song" type="button" name="skip-song" class="btn btn-trans btn-skip"><i class="fa fa-step-forward" aria-hidden="true"></i> Skip</button>
+          <div class="m-top-1">
+            <strong><span id="numSelectedSongs"></span></strong> of <strong><?php echo get_all_songs_count(); ?></strong> songs<br>
+            match saved criteria
+          </div>
 				</div>
 				<div class="col-md-6 text-center">
 					<p><strong>Set <span class="color-red">speed</span>, <span class="color-orange">mood</span>, <span class="color-yellow">intensity</span> and <span class="color-brightyellow">sounds</span>:</strong></p>
@@ -498,6 +502,9 @@
 	  }
 
 	  var videos = <?php echo json_encode($songlist) ?>;
+
+    videoCount = document.getElementById('numSelectedSongs');
+    videoCount.innerHTML = videos.length;
 
 	  shuffle(videos);
 

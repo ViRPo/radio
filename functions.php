@@ -389,6 +389,23 @@ function get_all_songs(){
 	}
 }
 
+function get_all_songs_count(){
+	if ($link = connect_db()) {
+		$sql = "SELECT COUNT(*) FROM `songs` WHERE `accepted` = 1";
+		$result = mysqli_query($link, $sql);
+		if ($result) {
+			return mysqli_fetch_row($result)[0];
+			mysqli_free_result($result);
+		} else {
+			// dopyt sa NEpodarilo vykonať!
+			return false;
+		}
+	} else {
+		// Unable to connect with database server!
+		return false;
+	}
+}
+
 function get_songs($speed1, $speed2, $speed3, $speed4, $mood1, $mood2, $mood3, $intensity1, $intensity2, $intensity3, $vocal1, $vocal2, $vocal3){
 	if ($link = connect_db()) {
 		$sql = "SELECT `youtube_id` FROM `songs` WHERE (";
