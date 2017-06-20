@@ -3,7 +3,7 @@
 
   //https://developers.google.com/apis-explorer/#p/youtube/v3/youtube.commentThreads.list?part=snippet&maxResults=100&textFormat=plainText&videoId=ajuIJphqEPY&_h=9&
 
-  $initRequest = "https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&maxResults=100&textFormat=plainText&videoId=VzGSeWwNkLI&key=" . $GLOBALS['googleApiKey'];
+  $initRequest = "https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&maxResults=100&order=relevance&textFormat=plainText&videoId=VzGSeWwNkLI&key=" . $GLOBALS['googleApiKey'];
 
   echo $initRequest . "<br><br>";
 
