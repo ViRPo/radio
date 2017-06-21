@@ -102,12 +102,12 @@
 						}
 						?>
 
-						<a class="btn" type="button" data-toggle="collapse" data-target="#addSongForm" aria-expanded="false" aria-controls="addSongForm">
+						<!--<a class="btn" type="button" data-toggle="collapse" data-target="#addSongForm" aria-expanded="false" aria-controls="addSongForm">
 							<i class="fa fa-plus-circle"></i> Add new song
-						</a>
+						</a>-->
 
 						<a class="btn" type="button" data-toggle="collapse" data-target="#quickAddSongForm" aria-expanded="false" aria-controls="quickAddSongForm">
-							<i class="fa fa-plus-circle"></i> Quick add
+							<i class="fa fa-plus-circle"></i> Add new song
 						</a>
 
             <form method="post" class="add-form collapse" id="quickAddSongForm">

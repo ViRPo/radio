@@ -1,6 +1,7 @@
 <?php
 
 include('config.php');
+include('stats.php');
 
 session_start();
 
@@ -13,6 +14,65 @@ function connect_db() {
 		// Nespojilo sa so servrom
 		return false;
 	}
+}
+
+function contains_count($needles, $haystack) {
+  return count(array_intersect($needles, explode(" ", preg_replace("/[^A-Za-z0-9' -]/", "", $haystack))));
+}
+
+function contains($needles, $haystack) {
+  return array_intersect($needles, explode(" ", preg_replace("/[^A-Za-z0-9' -]/", "", $haystack)));
+}
+
+function append_data_to_string($data) {
+  $string_result = "";
+  for ($i=0; $i < $data["pageInfo"]["totalResults"]; $i++) {
+    $comment = $data["items"][$i]["snippet"]["topLevelComment"]["snippet"]["textOriginal"];
+    $string_result .= " " . strtolower(preg_replace("/[^a-zA-Z]+/", " ", $comment));
+  }
+  return $string_result;
+}
+
+function get_string_from_yid($youtubeID) {
+  $initRequest = "https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&maxResults=100&textFormat=plainText&videoId=" . $youtubeID . "&key=" . $GLOBALS['googleApiKey'];
+
+  $request = file_get_contents($initRequest);
+  $data = json_decode($request, true);
+
+  $comments_string = "";
+  append_data_to_string($data, $comments_string);
+
+  $count_repeats = 1;
+  while(($count_repeats < 7) && array_key_exists("nextPageToken",$data)){
+    $count_repeats++;
+    $curRequest = $initRequest . "&pageToken=" . $data["nextPageToken"];
+    $request = file_get_contents($curRequest);
+    $data = json_decode($request, true);
+
+    $comments_string .= " " . append_data_to_string($data);
+  }
+
+  return $comments_string;
+}
+
+function stat_form_counts($stat_low, $stat_high) {
+  if(($stat_low+1)/($stat_high+1) > 2) {
+    return 1;
+  } else {
+    if(($stat_high+1)/($stat_low+1) > 2) {
+      return 3;
+    } else {
+      return 2;
+    }
+  }
+}
+
+function bin_stat_from_counts($stat) {
+  if($stat > 1) {
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
 //Pridavame songu
@@ -71,12 +131,18 @@ function add_song() {
 // Quick Add funkcia
 function quick_add_song() {
 	if ($link = connect_db()) {
+    global $song_stats;
+
+    $speed_val = 0;
+    $mood_val = 0;
+    $intensity_val = 0;
 		$instrumental_val = 0;
 		$electro_val = 0;
 		$vocal_val = 0;
 		$user_id = 0;
 		$admin_id = 0;
 		$accepted = 0;
+
 		if (isset($_SESSION['user_id'])) {
 			$user_id=$_SESSION['user_id'];
 		}
@@ -85,12 +151,36 @@ function quick_add_song() {
 				$admin_id = $_SESSION['user_id'];
 			}
 		}
-		$video_parsed_url = "Unable to parse: ".addslashes(strip_tags($_POST['add-url']));
-		if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', addslashes(strip_tags($_POST['quick-add-url'])), $match)) {
+    $video_id = addslashes(strip_tags($_POST['quick-add-url']));
+		$video_parsed_url = "Unable to parse: ".$video_id;
+		if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $video_id, $match)) {
 		    $video_parsed_url = $match[1];
 		}
+    if (strlen($video_id) == 11) $video_parsed_url = $video_id;
+
+    $result_string = get_string_from_yid($video_parsed_url);
+
+    $speed_val = stat_form_counts(
+      contains_count($song_stats["speed_slow"], $result_string),
+      contains_count($song_stats["speed_fast"], $result_string)
+    );
+
+    $mood_val = stat_form_counts(
+      contains_count($song_stats["mood_dark"], $result_string),
+      contains_count($song_stats["mood_cheerful"], $result_string)
+    );
+
+    $intensity_val = stat_form_counts(
+      contains_count($song_stats["intensity_calm"], $result_string),
+      contains_count($song_stats["intensity_intense"], $result_string)
+    );
+
+		$instrumental_val = bin_stat_from_counts(contains_count($song_stats["instrumental"], $result_string));
+		$electro_val = bin_stat_from_counts(contains_count($song_stats["electro"], $result_string));
+		$vocal_val = bin_stat_from_counts(contains_count($song_stats["vocal"], $result_string));
+
 		//$sql = "INSERT INTO `radio`.`songs` (`id`, `youtube_id`, `speed`, `mood`, `intensity`, `instrumental`, `electro`, `vocal`, `admin_id`, `accepted`, `plays`, `skips`) VALUES (NULL, 'lwPrBchV3ZQ', '3', '2', '2', '1', '0', '1', '0', '0', '0', '0');";
-		$sql = "INSERT INTO `radio`.`songs` (`id`, `youtube_id`, `speed`, `mood`, `intensity`, `instrumental`, `electro`, `vocal`, `admin_id`, `user_id`, `accepted`, `plays`, `skips`) VALUES (NULL, '" . $video_parsed_url . "', '3', '2', '2', '" . $instrumental_val . "', '" . $electro_val . "', '" . $vocal_val . "', '" . $admin_id . "', '" . $user_id . "', '" . $accepted . "', '0', '0');";
+		$sql = "INSERT INTO `radio`.`songs` (`id`, `youtube_id`, `speed`, `mood`, `intensity`, `instrumental`, `electro`, `vocal`, `admin_id`, `user_id`, `accepted`, `plays`, `skips`) VALUES (NULL, '" . $video_parsed_url . "', '" . $speed_val . "', '" . $mood_val . "', '" . $intensity_val . "', '" . $instrumental_val . "', '" . $electro_val . "', '" . $vocal_val . "', '" . $admin_id . "', '" . $user_id . "', '" . $accepted . "', '0', '0');";
 		$result = mysqli_query($link, $sql); // vykonaj dopyt
 		if ($result) {
 			// dopyt sa podarilo vykonať
