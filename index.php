@@ -363,6 +363,11 @@
 						</div>
 					</div>
 
+        <?php
+        }
+          if ($_SESSION['user_group']==1) {
+        ?>
+
 					<div class="row main-row">
 						<div class="container">
 							<div class="row">
