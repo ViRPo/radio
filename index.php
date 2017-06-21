@@ -12,6 +12,9 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<link href='https://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <script>
+    history.pushState(null,"Mood Radio | by ViRPo","");
+  </script>
 </head>
 <body>
 	<div class="container-fluid">
@@ -103,7 +106,7 @@
 						?>
 
 						<!--<a class="btn" type="button" data-toggle="collapse" data-target="#addSongForm" aria-expanded="false" aria-controls="addSongForm">
-							<i class="fa fa-plus-circle"></i> Add new song
+							<i class="fa fa-plus-circle"></i> Add params song
 						</a>-->
 
 						<a class="btn" type="button" data-toggle="collapse" data-target="#quickAddSongForm" aria-expanded="false" aria-controls="quickAddSongForm">
@@ -344,7 +347,7 @@
 		<?php
 
 			if (isset($_SESSION['user_group'])) {
-				if ($_SESSION['user_group']==1) {
+				if ($_SESSION['user_group']<4) {
 					?>
 
 					<div class="row main-row">
@@ -446,7 +449,7 @@
 				url: 'add.php',
 				data: $('form#suggestForm').serialize(),
 				success: function () {
-					alert('Song was sucesfully submitted. Thank you :)');
+					alert('Feedback was sucesfully submitted. Thank you :)');
 				}
 			});
 		});

@@ -110,8 +110,8 @@ function add_song() {
 		if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', addslashes(strip_tags($_POST['add-url'])), $match)) {
 		    $video_parsed_url = $match[1];
 		}
-		//$sql = "INSERT INTO `radio`.`songs` (`id`, `youtube_id`, `speed`, `mood`, `intensity`, `instrumental`, `electro`, `vocal`, `admin_id`, `accepted`, `plays`, `skips`) VALUES (NULL, 'lwPrBchV3ZQ', '3', '2', '2', '1', '0', '1', '0', '0', '0', '0');";
-		$sql = "INSERT INTO `radio`.`songs` (`id`, `youtube_id`, `speed`, `mood`, `intensity`, `instrumental`, `electro`, `vocal`, `admin_id`, `user_id`, `accepted`, `plays`, `skips`) VALUES (NULL, '" . $video_parsed_url . "', '" . addslashes(strip_tags($_POST['add-speed'])) . "', '" . addslashes(strip_tags($_POST['add-mood'])) . "', '" . addslashes(strip_tags($_POST['add-intensity'])) . "', '" . $instrumental_val . "', '" . $electro_val . "', '" . $vocal_val . "', '" . $admin_id . "', '" . $user_id . "', '" . $accepted . "', '0', '0');";
+		//$sql = "INSERT INTO `" . $GLOBALS['dbname'] . "`.`songs` (`id`, `youtube_id`, `speed`, `mood`, `intensity`, `instrumental`, `electro`, `vocal`, `admin_id`, `accepted`, `plays`, `skips`) VALUES (NULL, 'lwPrBchV3ZQ', '3', '2', '2', '1', '0', '1', '0', '0', '0', '0');";
+		$sql = "INSERT INTO `" . $GLOBALS['dbname'] . "`.`songs` (`id`, `youtube_id`, `speed`, `mood`, `intensity`, `instrumental`, `electro`, `vocal`, `admin_id`, `user_id`, `accepted`, `plays`, `skips`) VALUES (NULL, '" . $video_parsed_url . "', '" . addslashes(strip_tags($_POST['add-speed'])) . "', '" . addslashes(strip_tags($_POST['add-mood'])) . "', '" . addslashes(strip_tags($_POST['add-intensity'])) . "', '" . $instrumental_val . "', '" . $electro_val . "', '" . $vocal_val . "', '" . $admin_id . "', '" . $user_id . "', '" . $accepted . "', '0', '0');";
 		//$sql = "INSERT INTO `songs` (`id`, `name`, `pos`, `day`, `month`, `year`, `injury`, `point`, `assist`) VALUES (NULL, '" . addslashes(strip_tags($_POST['name'])) . "', '". addslashes(strip_tags($_POST['pos'])) ."', '" . addslashes(strip_tags($_POST['day'])) . "', '" . addslashes(strip_tags($_POST['month'])) . "', '" . addslashes(strip_tags($_POST['year'])) . "', '" . addslashes(strip_tags($_POST['injury'])) . "', '" . addslashes(strip_tags($_POST['point'])) . "', '" . addslashes(strip_tags($_POST['assist'])) . "');";
 		$result = mysqli_query($link, $sql); // vykonaj dopyt
 		if ($result) {
@@ -179,8 +179,8 @@ function quick_add_song() {
 		$electro_val = bin_stat_from_counts(contains_count($song_stats["electro"], $result_string));
 		$vocal_val = bin_stat_from_counts(contains_count($song_stats["vocal"], $result_string));
 
-		//$sql = "INSERT INTO `radio`.`songs` (`id`, `youtube_id`, `speed`, `mood`, `intensity`, `instrumental`, `electro`, `vocal`, `admin_id`, `accepted`, `plays`, `skips`) VALUES (NULL, 'lwPrBchV3ZQ', '3', '2', '2', '1', '0', '1', '0', '0', '0', '0');";
-		$sql = "INSERT INTO `radio`.`songs` (`id`, `youtube_id`, `speed`, `mood`, `intensity`, `instrumental`, `electro`, `vocal`, `admin_id`, `user_id`, `accepted`, `plays`, `skips`) VALUES (NULL, '" . $video_parsed_url . "', '" . $speed_val . "', '" . $mood_val . "', '" . $intensity_val . "', '" . $instrumental_val . "', '" . $electro_val . "', '" . $vocal_val . "', '" . $admin_id . "', '" . $user_id . "', '" . $accepted . "', '0', '0');";
+		//$sql = "INSERT INTO `" . $GLOBALS['dbname'] . "`.`songs` (`id`, `youtube_id`, `speed`, `mood`, `intensity`, `instrumental`, `electro`, `vocal`, `admin_id`, `accepted`, `plays`, `skips`) VALUES (NULL, 'lwPrBchV3ZQ', '3', '2', '2', '1', '0', '1', '0', '0', '0', '0');";
+		$sql = "INSERT INTO `" . $GLOBALS['dbname'] . "`.`songs` (`id`, `youtube_id`, `speed`, `mood`, `intensity`, `instrumental`, `electro`, `vocal`, `admin_id`, `user_id`, `accepted`, `plays`, `skips`) VALUES (NULL, '" . $video_parsed_url . "', '" . $speed_val . "', '" . $mood_val . "', '" . $intensity_val . "', '" . $instrumental_val . "', '" . $electro_val . "', '" . $vocal_val . "', '" . $admin_id . "', '" . $user_id . "', '" . $accepted . "', '0', '0');";
 		$result = mysqli_query($link, $sql); // vykonaj dopyt
 		if ($result) {
 			// dopyt sa podarilo vykonať
@@ -206,9 +206,9 @@ function check_if_set($value){
 
 function add_comment() {
 	if ($link = connect_db()) {
-		//$sql = "INSERT INTO `radio`.`songs` (`id`, `youtube_id`, `speed`, `mood`, `intensity`, `instrumental`, `electro`, `vocal`, `admin_id`, `accepted`, `plays`, `skips`) VALUES (NULL, 'lwPrBchV3ZQ', '3', '2', '2', '1', '0', '1', '0', '0', '0', '0');";
-		//$sql = "INSERT INTO `radio`.`comments` (`id`, `youtube_id`, `speed`, `mood`, `intensity`, `instrumental`, `electro`, `vocal`, `admin_id`, `accepted`, `plays`, `skips`) VALUES (NULL, '" . $video_parsed_url . "', '" . addslashes(strip_tags($_POST['add-speed'])) . "', '" . addslashes(strip_tags($_POST['add-mood'])) . "', '" . addslashes(strip_tags($_POST['add-intensity'])) . "', '" . $instrumental_val . "', '" . $electro_val . "', '" . $vocal_val . "', '0', '0', '0', '0');";
-		$sql = "INSERT INTO `radio`.`comments` (`id`, `nickname`, `email`, `comment`, `song_id`) VALUES (NULL, '" . addslashes(strip_tags($_POST['comment-nickname'])) . "', '" . addslashes(strip_tags($_POST['comment-email'])) . "', '" . addslashes(strip_tags($_POST['comment'])) . "', '" . addslashes(strip_tags($_POST['comment-songid'])) . "');";
+		//$sql = "INSERT INTO `" . $GLOBALS['dbname'] . "`.`songs` (`id`, `youtube_id`, `speed`, `mood`, `intensity`, `instrumental`, `electro`, `vocal`, `admin_id`, `accepted`, `plays`, `skips`) VALUES (NULL, 'lwPrBchV3ZQ', '3', '2', '2', '1', '0', '1', '0', '0', '0', '0');";
+		//$sql = "INSERT INTO `" . $GLOBALS['dbname'] . "`.`comments` (`id`, `youtube_id`, `speed`, `mood`, `intensity`, `instrumental`, `electro`, `vocal`, `admin_id`, `accepted`, `plays`, `skips`) VALUES (NULL, '" . $video_parsed_url . "', '" . addslashes(strip_tags($_POST['add-speed'])) . "', '" . addslashes(strip_tags($_POST['add-mood'])) . "', '" . addslashes(strip_tags($_POST['add-intensity'])) . "', '" . $instrumental_val . "', '" . $electro_val . "', '" . $vocal_val . "', '0', '0', '0', '0');";
+		$sql = "INSERT INTO `" . $GLOBALS['dbname'] . "`.`comments` (`id`, `nickname`, `email`, `comment`, `song_id`) VALUES (NULL, '" . addslashes(strip_tags($_POST['comment-nickname'])) . "', '" . addslashes(strip_tags($_POST['comment-email'])) . "', '" . addslashes(strip_tags($_POST['comment'])) . "', '" . addslashes(strip_tags($_POST['comment-songid'])) . "');";
 		$result = mysqli_query($link, $sql); // vykonaj dopyt
 		if ($result) {
 			// dopyt sa podarilo vykonať
@@ -254,7 +254,7 @@ function add_user(){
 
 function reg_user($username, $pass, $email, $group){
 	if ($link = connect_db()) {
-		$sql = "INSERT INTO `radio`.`users` (`id`, `nickname`, `email`, `password`, `group`) VALUES (NULL, '". $username ."', '". $email ."', '". $pass ."', '". $group ."');";
+		$sql = "INSERT INTO `" . $GLOBALS['dbname'] . "`.`users` (`id`, `nickname`, `email`, `password`, `group`) VALUES (NULL, '". $username ."', '". $email ."', '". $pass ."', '". $group ."');";
 		$result = mysqli_query($link, $sql);
 		if ($result) {
 	    echo 'You can login now :)';
@@ -288,7 +288,7 @@ function get_user_group($user_id){
 
 function set_user_group($user, $group){
 	if ($link = connect_db()) {
-		$sql = "UPDATE `radio`.`users` SET `group` = '".$group."' WHERE `users`.`id` = ".$user.";";
+		$sql = "UPDATE `" . $GLOBALS['dbname'] . "`.`users` SET `group` = '".$group."' WHERE `users`.`id` = ".$user.";";
 		$result = mysqli_query($link, $sql);
 		if ($result) {
 	    echo 'User group set sucesfully!';
@@ -303,7 +303,7 @@ function set_user_group($user, $group){
 
 function set_song_accept($song, $accept){
 	if ($link = connect_db()) {
-		$sql = "UPDATE `radio`.`songs` SET `admin_id` = '".$_SESSION['user_id']."', `accepted` = '".$accept."' WHERE `songs`.`id` = ".$song.";";
+		$sql = "UPDATE `" . $GLOBALS['dbname'] . "`.`songs` SET `admin_id` = '".$_SESSION['user_id']."', `accepted` = '".$accept."' WHERE `songs`.`id` = ".$song.";";
 		$result = mysqli_query($link, $sql);
 		if ($result) {
 	    echo "Song's 'accepted' set sucesfully!";
@@ -318,7 +318,7 @@ function set_song_accept($song, $accept){
 
 function set_song_edit_accept($song, $speed, $mood, $intensity, $instrumental, $electro, $vocal, $accept){
 	if ($link = connect_db()) {
-		$sql = "UPDATE `radio`.`songs` SET `admin_id` = '".$_SESSION['user_id']."', `speed` = '".$speed."', `mood` = '".$mood."', `intensity` = '".$intensity."', `instrumental` = '".$instrumental."', `electro` = '".$electro."', `vocal` = '".$vocal."', `accepted` = '".$accept."' WHERE `songs`.`id` = ".$song.";";
+		$sql = "UPDATE `" . $GLOBALS['dbname'] . "`.`songs` SET `admin_id` = '".$_SESSION['user_id']."', `speed` = '".$speed."', `mood` = '".$mood."', `intensity` = '".$intensity."', `instrumental` = '".$instrumental."', `electro` = '".$electro."', `vocal` = '".$vocal."', `accepted` = '".$accept."' WHERE `songs`.`id` = ".$song.";";
 		$result = mysqli_query($link, $sql);
 		if ($result) {
 	    echo "Song's 'accepted' set sucesfully!";
@@ -597,7 +597,7 @@ function resolve_comment($id){
 	echo "resolved ".$id;
 
 	if ($link = connect_db()) {
-		$sql = "UPDATE `radio`.`comments` SET `resolved` = '1' WHERE `comments`.`id` = '".$id."';";
+		$sql = "UPDATE `" . $GLOBALS['dbname'] . "`.`comments` SET `resolved` = '1' WHERE `comments`.`id` = '".$id."';";
 		$result = mysqli_query($link, $sql);
 		if ($result) {
 	    echo 'Comment marked resolved';
